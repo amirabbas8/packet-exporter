@@ -1,0 +1,1165 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "description": "TCP: RST, then SYN+ACK, then SYN, then FIN; remaining TCP is ACK. Source IP/port first; dest only if source did not match. increase() under-counts after LRU eviction.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "targetBlank": false,
+      "title": "Packets",
+      "type": "link",
+      "url": "/d/packets"
+    }
+  ],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "description": "TCP SYN.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#F2CC0C"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#F2CC0C",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "sum(increase((((packet_total{type=\"syn\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\"} or packet_total{type=\"syn\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\"}) unless packet_total{src_port=~\".+\"} unless packet_total{dst_port=~\".+\"}) or (packet_total{type=\"syn\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"syn\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"} or packet_total{type=\"syn\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"syn\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"}) or ((packet_total{type=\"syn\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\"} or packet_total{type=\"syn\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\"}) unless packet_total{src_port=~\".+\"}))[$__range])) or vector(0)",
+          "refId": "A",
+          "legendFormat": "SYN"
+        }
+      ],
+      "title": "SYN",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "description": "TCP SYN+ACK.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#FF9830"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#FF9830",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 3,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "sum(increase((((packet_total{type=\"synack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\"} or packet_total{type=\"synack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\"}) unless packet_total{src_port=~\".+\"} unless packet_total{dst_port=~\".+\"}) or (packet_total{type=\"synack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"synack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"} or packet_total{type=\"synack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"synack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"}) or ((packet_total{type=\"synack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\"} or packet_total{type=\"synack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\"}) unless packet_total{src_port=~\".+\"}))[$__range])) or vector(0)",
+          "refId": "A",
+          "legendFormat": "SYN-ACK"
+        }
+      ],
+      "title": "SYN-ACK",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "description": "TCP ACK, including data.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#73BF69"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#73BF69",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 7,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "sum(increase((((packet_total{type=\"ack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\"} or packet_total{type=\"ack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\"}) unless packet_total{src_port=~\".+\"} unless packet_total{dst_port=~\".+\"}) or (packet_total{type=\"ack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"ack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"} or packet_total{type=\"ack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"ack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"}) or ((packet_total{type=\"ack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\"} or packet_total{type=\"ack\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\"}) unless packet_total{src_port=~\".+\"}))[$__range])) or vector(0)",
+          "refId": "A",
+          "legendFormat": "ACK / data"
+        }
+      ],
+      "title": "ACK / data",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "description": "TCP FIN.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#5794F2"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#5794F2",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 11,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "sum(increase((((packet_total{type=\"fin\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\"} or packet_total{type=\"fin\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\"}) unless packet_total{src_port=~\".+\"} unless packet_total{dst_port=~\".+\"}) or (packet_total{type=\"fin\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"fin\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"} or packet_total{type=\"fin\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"fin\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"}) or ((packet_total{type=\"fin\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\"} or packet_total{type=\"fin\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\"}) unless packet_total{src_port=~\".+\"}))[$__range])) or vector(0)",
+          "refId": "A",
+          "legendFormat": "FIN"
+        }
+      ],
+      "title": "FIN",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "description": "TCP RST.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#F2495C"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#F2495C",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 14,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "sum(increase((((packet_total{type=\"rst\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\"} or packet_total{type=\"rst\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\"}) unless packet_total{src_port=~\".+\"} unless packet_total{dst_port=~\".+\"}) or (packet_total{type=\"rst\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"rst\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"} or packet_total{type=\"rst\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"rst\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"}) or ((packet_total{type=\"rst\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\"} or packet_total{type=\"rst\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\"}) unless packet_total{src_port=~\".+\"}))[$__range])) or vector(0)",
+          "refId": "A",
+          "legendFormat": "RST"
+        }
+      ],
+      "title": "RST",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "description": "UDP.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#B877D9"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#B877D9",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 17,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "sum(increase((((packet_total{type=\"udp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\"} or packet_total{type=\"udp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\"}) unless packet_total{src_port=~\".+\"} unless packet_total{dst_port=~\".+\"}) or (packet_total{type=\"udp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"udp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"} or packet_total{type=\"udp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"udp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"}) or ((packet_total{type=\"udp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\"} or packet_total{type=\"udp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\"}) unless packet_total{src_port=~\".+\"}))[$__range])) or vector(0)",
+          "refId": "A",
+          "legendFormat": "UDP"
+        }
+      ],
+      "title": "UDP",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "description": "ICMP / ICMPv6.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#6ED0E0"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#6ED0E0",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "sum(increase((((packet_total{type=\"icmp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\"} or packet_total{type=\"icmp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\"}) unless packet_total{src_port=~\".+\"} unless packet_total{dst_port=~\".+\"}) or (packet_total{type=\"icmp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"icmp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"} or packet_total{type=\"icmp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",src_port=~\"$port\"} or packet_total{type=\"icmp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"}) or ((packet_total{type=\"icmp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\"} or packet_total{type=\"icmp\",interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\"}) unless packet_total{src_port=~\".+\"}))[$__range])) or vector(0)",
+          "refId": "A",
+          "legendFormat": "ICMP"
+        }
+      ],
+      "title": "ICMP",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "description": "Band where that class was seen in the bucket.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "lineWidth": 0
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "1": {
+                  "text": "seen"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^syn( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#F2CC0C",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^synack( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#FF9830",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^ack( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#73BF69",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^fin( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5794F2",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^rst( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#F2495C",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^udp( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#B877D9",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^icmp( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#6ED0E0",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 10,
+      "options": {
+        "alignValue": "center",
+        "mergeValues": true,
+        "rowHeight": 0.85,
+        "showValue": "never",
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "((sum by (type) (increase((((packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\"}) unless packet_total{src_port=~\".+\"} unless packet_total{dst_port=~\".+\"}) or (packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",src_port=~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",src_port=~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"}) or ((packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\"}) unless packet_total{src_port=~\".+\"}))[$__interval]))) > 0)",
+          "refId": "A",
+          "legendFormat": "{{type}}"
+        }
+      ],
+      "title": "When each class was seen",
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "description": "increase() per bucket. LRU eviction looks like a reset.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 75,
+            "showPoints": "never",
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "spanNulls": false
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^syn( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#F2CC0C",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^synack( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#FF9830",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^ack( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#73BF69",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^fin( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5794F2",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^rst( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#F2495C",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^udp( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#B877D9",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^icmp( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#6ED0E0",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "calcs": [
+            "sum",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "sum by (type) (increase((((packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\"}) unless packet_total{src_port=~\".+\"} unless packet_total{dst_port=~\".+\"}) or (packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",src_port=~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",src_port=~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"}) or ((packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\"}) unless packet_total{src_port=~\".+\"}))[$__interval]))",
+          "refId": "A",
+          "legendFormat": "{{type}}"
+        }
+      ],
+      "title": "Packets over time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "description": "skb->len. A tall ACK band is data.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 75,
+            "showPoints": "never",
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "spanNulls": false
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^syn( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#F2CC0C",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^synack( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#FF9830",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^ack( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#73BF69",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^fin( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5794F2",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^rst( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#F2495C",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^udp( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#B877D9",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^icmp( |$)/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#6ED0E0",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "calcs": [
+            "sum",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "sum by (type) (increase((((packet_bytes_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\"} or packet_bytes_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\"}) unless packet_bytes_total{src_port=~\".+\"} unless packet_bytes_total{dst_port=~\".+\"}) or (packet_bytes_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",src_port=~\"$port\"} or packet_bytes_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"} or packet_bytes_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",src_port=~\"$port\"} or packet_bytes_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"}) or ((packet_bytes_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\"} or packet_bytes_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\"}) unless packet_bytes_total{src_port=~\".+\"}))[$__interval]))",
+          "refId": "A",
+          "legendFormat": "{{type}}"
+        }
+      ],
+      "title": "Bytes over time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "description": "Source match first, then dest-only.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "showPoints": "never",
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "spanNulls": false
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 16,
+        "x": 0,
+        "y": 29
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "calcs": [
+            "sum",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "topk(20, sum by (interface, src_ip, dst_ip, src_port, dst_port, type) (increase((((packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\"}) unless packet_total{src_port=~\".+\"} unless packet_total{dst_port=~\".+\"}) or (packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",src_port=~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",src_port=~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"}) or ((packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\"}) unless packet_total{src_port=~\".+\"}))[$__interval])))",
+          "refId": "A",
+          "legendFormat": "{{type}} {{src_ip}}:{{src_port}} -> {{dst_ip}}:{{dst_port}}"
+        }
+      ],
+      "title": "Flows",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "description": "increase() over the selected range.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 16,
+        "y": 29
+      },
+      "id": 14,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Value"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "sum by (interface, src_ip, dst_ip, src_port, dst_port, type) (increase((((packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\"}) unless packet_total{src_port=~\".+\"} unless packet_total{dst_port=~\".+\"}) or (packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",src_port=~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",src_port=~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\",src_port!~\"$port\"}) or ((packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",src_ip=~\"$ip\",dst_port=~\"$port\"} or packet_total{interface=~\"${iface:regex}\",type=~\"${type:regex}\",dst_ip=~\"$ip\",src_ip!~\"$ip\",dst_port=~\"$port\"}) unless packet_total{src_port=~\".+\"}))[$__range]))",
+          "refId": "A",
+          "legendFormat": "{{type}} {{src_ip}}:{{src_port}} -> {{dst_ip}}:{{dst_port}}",
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "title": "Flows in this range",
+      "type": "table"
+    }
+  ],
+  "refresh": "15s",
+  "schemaVersion": 39,
+  "tags": [
+    "packets"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": ".*",
+          "value": ".*"
+        },
+        "description": "Source first; destination only if source did not match. .* is every src_ip once.",
+        "label": "IP (src, else dst)",
+        "name": "ip",
+        "options": [
+          {
+            "selected": true,
+            "text": ".*",
+            "value": ".*"
+          }
+        ],
+        "query": ".*",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": ".*",
+          "value": ".*"
+        },
+        "description": "Either side: source port first, then dest port if source port did not match. .* keeps all ports and still works if src_port was dropped.",
+        "label": "Port (src or dst)",
+        "name": "port",
+        "options": [
+          {
+            "selected": true,
+            "text": ".*",
+            "value": ".*"
+          }
+        ],
+        "query": ".*",
+        "type": "textbox"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "victoriametrics"
+        },
+        "definition": "label_values(packet_total, interface)",
+        "includeAll": true,
+        "label": "Interface",
+        "multi": true,
+        "name": "iface",
+        "query": "label_values(packet_total, interface)",
+        "refresh": 2,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "includeAll": true,
+        "label": "Type",
+        "multi": true,
+        "name": "type",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "SYN",
+            "value": "syn"
+          },
+          {
+            "selected": false,
+            "text": "SYN-ACK",
+            "value": "synack"
+          },
+          {
+            "selected": false,
+            "text": "ACK / data",
+            "value": "ack"
+          },
+          {
+            "selected": false,
+            "text": "FIN",
+            "value": "fin"
+          },
+          {
+            "selected": false,
+            "text": "RST",
+            "value": "rst"
+          },
+          {
+            "selected": false,
+            "text": "UDP",
+            "value": "udp"
+          },
+          {
+            "selected": false,
+            "text": "ICMP",
+            "value": "icmp"
+          }
+        ],
+        "query": "SYN : syn,SYN-ACK : synack,ACK / data : ack,FIN : fin,RST : rst,UDP : udp,ICMP : icmp",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "title": "Traffic timeline",
+  "uid": "packet-timeline",
+  "version": 5
+}

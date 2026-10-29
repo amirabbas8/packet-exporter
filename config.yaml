@@ -1,0 +1,11 @@
+labels:
+  - interface
+  - src_ip
+  - dst_ip
+  - src_port
+  - dst_port
+  - type
+
+# Constant labels added to every series. They are not stored in the kernel map.
+# static_labels:
+#   node: compute-1

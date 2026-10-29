@@ -1,0 +1,5 @@
+.git
+packet-exporter
+internal/probe/packet_bpfel.go
+internal/probe/packet_bpfeb.go
+internal/probe/packet_bpf*.o
